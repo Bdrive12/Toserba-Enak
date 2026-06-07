@@ -13,9 +13,7 @@
 <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 
 <style>
-body {
-    background: #f8f9fa;
-}
+body { background: #f8f9fa; }
 .login-container { max-width: 400px; margin: 80px auto; }
 .btn-tab.active { background-color: #0dcaf0 !important; color: #000 !important; font-weight: bold; }
 .chart-container { max-width: 100%; height: 280px; margin-top: 15px; }
@@ -27,7 +25,6 @@ body {
 .btn-hapus:hover { transform: scale(1.05); }
 .toast-notif { position: fixed; bottom: 20px; right: 20px; z-index: 9999; min-width: 250px; }
 
-/* CHAT */
 #chatToggleBtn {
     position: fixed;
     right: 20px;
@@ -86,11 +83,11 @@ body {
             <form id="formLogin" onsubmit="prosesLogin(event)">
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Username Admin</label>
-                    <input type="text" id="username" class="form-control form-control-sm" placeholder="adminenakkkk" required>
+                    <input type="text" id="username" class="form-control form-control-sm" value="adminenakkkk" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Password Security</label>
-                    <input type="password" id="password" class="form-control form-control-sm" placeholder="toserba2026" required>
+                    <input type="password" id="password" class="form-control form-control-sm" value="toserba2026" required>
                 </div>
                 <button type="submit" class="btn btn-dark btn-sm w-100 fw-bold">Masuk ke Sistem <i class="fa-solid fa-right-to-bracket ms-1"></i></button>
             </form>
@@ -106,11 +103,11 @@ body {
                 <span class="badge bg-danger fs-7 ms-2">Ritel Admin Panel</span>
             </span>
             <div class="navbar-nav ms-auto flex-row gap-2">
-                <button class="nav-link btn-tab active" onclick="bukaTab(event,'dashboard')"><i class="fa-solid fa-chart-pie me-1"></i> Utama</button>
-                <button class="nav-link btn-tab" onclick="bukaTab(event,'surat')"><i class="fa-solid fa-envelope me-1"></i> Surat</button>
-                <button class="nav-link btn-tab" onclick="bukaTab(event,'memo')"><i class="fa-solid fa-file-lines me-1"></i> Memo</button>
-                <button class="nav-link btn-tab" onclick="bukaTab(event,'absen')"><i class="fa-solid fa-calendar-check me-1"></i> Absen Ritel</button>
-                <button class="btn btn-sm btn-outline-danger ms-2" onclick="prosesLogout()"><i class="fa-solid fa-power-off"></i> Keluar</button>
+                <button class="nav-link btn-tab active" onclick="bukaTab(event,'dashboard')">Utama</button>
+                <button class="nav-link btn-tab" onclick="bukaTab(event,'surat')">Surat</button>
+                <button class="nav-link btn-tab" onclick="bukaTab(event,'memo')">Memo</button>
+                <button class="nav-link btn-tab" onclick="bukaTab(event,'absen')">Absen Ritel</button>
+                <button class="btn btn-sm btn-outline-danger ms-2" onclick="prosesLogout()">Keluar</button>
             </div>
         </div>
     </nav>
@@ -146,15 +143,15 @@ body {
                                 </div>
                                 <div class="mb-2">
                                     <label class="small fw-bold">Nomor Surat</label>
-                                    <input type="text" id="noSurat" class="form-control form-control-sm" required placeholder="005/SRT/VI/2026">
+                                    <input type="text" id="noSurat" class="form-control form-control-sm" required>
                                 </div>
                                 <div class="mb-2">
                                     <label class="small fw-bold">Asal / Tujuan</label>
-                                    <input type="text" id="kontakSurat" class="form-control form-control-sm" required placeholder="PT. Maju Jaya">
+                                    <input type="text" id="kontakSurat" class="form-control form-control-sm" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="small fw-bold">Perihal</label>
-                                    <input type="text" id="perihalSurat" class="form-control form-control-sm" required placeholder="Undangan Rapat">
+                                    <input type="text" id="perihalSurat" class="form-control form-control-sm" required>
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-sm w-100">Simpan Surat</button>
                             </form>
@@ -184,11 +181,11 @@ body {
                         <div class="card-header bg-info text-white fw-bold small">Generator Memo Internal</div>
                         <div class="card-body">
                             <div class="mb-2"><label class="small fw-bold">Pengirim</label><input type="text" id="memoDari" class="form-control form-control-sm" value="Ahmad Subarjo (Direktur)"></div>
-                            <div class="mb-2"><label class="small fw-bold">Kepada</label><input type="text" id="memoKepada" class="form-control form-control-sm" placeholder="Manajer Operasional"></div>
+                            <div class="mb-2"><label class="small fw-bold">Kepada</label><input type="text" id="memoKepada" class="form-control form-control-sm"></div>
                             <div class="mb-2"><label class="small fw-bold">Tanggal</label><input type="text" id="memoTanggal" class="form-control form-control-sm" value="03 Juni 2026"></div>
-                            <div class="mb-2"><label class="small fw-bold">Perihal</label><input type="text" id="memoPerihal" class="form-control form-control-sm" placeholder="Tugas Luar Kota"></div>
-                            <div class="mb-3"><label class="small fw-bold">Isi Instruksi</label><textarea id="memoIsi" class="form-control form-control-sm" rows="6" placeholder="Tulis instruksi disini..."></textarea></div>
-                            <button onclick="downloadMemoPDF()" class="btn btn-info btn-sm text-white fw-bold w-100"><i class="fa-solid fa-file-pdf me-1"></i>Download PDF</button>
+                            <div class="mb-2"><label class="small fw-bold">Perihal</label><input type="text" id="memoPerihal" class="form-control form-control-sm"></div>
+                            <div class="mb-3"><label class="small fw-bold">Isi Instruksi</label><textarea id="memoIsi" class="form-control form-control-sm" rows="6"></textarea></div>
+                            <button onclick="downloadMemoPDF()" class="btn btn-info btn-sm text-white fw-bold w-100">Download PDF</button>
                         </div>
                     </div>
                 </div>
@@ -210,7 +207,7 @@ body {
 
         <div id="tab-absen" class="tab-konten d-none">
             <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-dark text-white fw-bold"><i class="fa-solid fa-users-gear me-2"></i>Manajemen Data Karyawan</div>
+                <div class="card-header bg-dark text-white fw-bold">Manajemen Data Karyawan</div>
                 <div class="card-body">
                     <div class="row g-2 align-items-end">
                         <div class="col-md-8">
@@ -237,7 +234,8 @@ body {
                         <div class="col-md-2">
                             <label class="small fw-bold">Bulan</label>
                             <select id="setBulan" class="form-select form-select-sm">
-                                <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option><option value="3">April</option><option value="4">Mei</option><option value="5" selected>Juni</option><option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
+                                <option value="0">Januari</option><option value="1">Februari</option><option value="2">Maret</option><option value="3">April</option><option value="4">Mei</option><option value="5" selected>Juni</option>
+                                <option value="6">Juli</option><option value="7">Agustus</option><option value="8">September</option><option value="9">Oktober</option><option value="10">November</option><option value="11">Desember</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -245,12 +243,12 @@ body {
                             <input type="number" id="setTahun" class="form-control form-control-sm" value="2026">
                         </div>
                         <div class="col-md-3">
-                            <button onclick="generateKalenderRitel()" class="btn btn-primary btn-sm w-100"><i class="fa-solid fa-calendar-alt"></i> Muat Kalender Absen</button>
+                            <button onclick="generateKalenderRitel()" class="btn btn-primary btn-sm w-100">Muat Kalender Absen</button>
                         </div>
                         <div class="col-md-5">
                             <div class="d-flex gap-2">
-                                <button onclick="exportToExcel()" class="btn btn-sm btn-success flex-grow-1"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
-                                <button onclick="exportToPDF()" class="btn btn-sm btn-danger flex-grow-1"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
+                                <button onclick="exportToExcel()" class="btn btn-sm btn-success flex-grow-1">Export Excel</button>
+                                <button onclick="exportToPDF()" class="btn btn-sm btn-danger flex-grow-1">Export PDF</button>
                             </div>
                         </div>
                     </div>
@@ -258,7 +256,7 @@ body {
             </div>
 
             <div class="card shadow-sm border-0">
-                <div class="card-header bg-success text-white fw-bold"><i class="fa-regular fa-calendar me-2"></i>Input Absensi Harian</div>
+                <div class="card-header bg-success text-white fw-bold">Input Absensi Harian</div>
                 <div class="card-body p-0">
                     <div class="absen-scroll-container">
                         <table class="table table-bordered table-sm m-0 table-absen" style="min-width:800px">
@@ -266,7 +264,7 @@ body {
                                 <tr>
                                     <th style="width:120px">Tanggal</th>
                                     <th style="width:80px">Hari</th>
-                                    <th style="min-width:400px">Daftar Karyawan & Status (H:Hadir, S:Sakit, I:Izin, A:Alpha)</th>
+                                    <th style="min-width:400px">Daftar Karyawan & Status</th>
                                     <th style="width:100px">Aksi Cepat</th>
                                 </tr>
                             </thead>
@@ -281,7 +279,7 @@ body {
             <div class="row g-3 mt-4">
                 <div class="col-xl-7">
                     <div class="card shadow-sm border-0">
-                        <div class="card-header bg-dark text-white fw-bold"><i class="fa-solid fa-chart-simple me-2"></i>Rekap Kehadiran Karyawan</div>
+                        <div class="card-header bg-dark text-white fw-bold">Rekap Kehadiran Karyawan</div>
                         <div class="card-body p-0 table-responsive" style="max-height:350px">
                             <table class="table table-sm table-striped text-center m-0" style="font-size:12px">
                                 <thead class="table-secondary">
@@ -294,7 +292,7 @@ body {
                 </div>
                 <div class="col-xl-5">
                     <div class="card shadow-sm border-0">
-                        <div class="card-header bg-secondary text-white fw-bold"><i class="fa-solid fa-chart-bar me-2"></i>Grafik Statistik</div>
+                        <div class="card-header bg-secondary text-white fw-bold">Grafik Statistik</div>
                         <div class="card-body p-2">
                             <div class="chart-container"><canvas id="chartAbsenRitel"></canvas></div>
                         </div>
@@ -305,16 +303,14 @@ body {
     </div>
 </div>
 
-<!-- Floating Chat Button -->
 <button id="chatToggleBtn" class="btn btn-primary rounded-circle shadow">
     <i class="fa-solid fa-comments"></i>
     <span id="chatBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
 </button>
 
-<!-- Chat Panel -->
 <div id="chatPanel" class="card shadow-lg">
     <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-        <strong><i class="fa-solid fa-comments me-2"></i>Chat Toserba</strong>
+        <strong>Chat Toserba</strong>
         <button type="button" class="btn btn-sm btn-light" id="closeChatBtn">×</button>
     </div>
     <div class="card-body p-2">
@@ -327,13 +323,13 @@ body {
     </div>
 </div>
 
-<!-- Toast -->
 <div class="toast-notif" id="toastNotif" style="display:none;">
     <div class="toast show" style="background:#28a745;color:white">
         <div class="toast-body" id="toastMessage">Data tersimpan!</div>
     </div>
 </div>
 
+<!-- GANTI MENJADI SCRIPT TYPE MODULE YANG DIPISAH ATAU GUNAKAN CARA LAIN -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import { getDatabase, ref, set, get, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
@@ -355,7 +351,22 @@ let daftarKaryawan = [];
 let dataAbsensi = {};
 let dataSurat = [];
 let chartInstance = null;
-let listenersReady = false;
+
+// EXPOSE FUNCTIONS TO GLOBAL SCOPE
+window.prosesLogin = prosesLogin;
+window.prosesLogout = prosesLogout;
+window.bukaTab = bukaTab;
+window.tambahSurat = tambahSurat;
+window.downloadMemoPDF = downloadMemoPDF;
+window.tambahKaryawanBaru = tambahKaryawanBaru;
+window.hapusKaryawan = hapusKaryawan;
+window.ubahStatus = ubahStatus;
+window.setSemuaHari = setSemuaHari;
+window.exportToExcel = exportToExcel;
+window.exportToPDF = exportToPDF;
+window.generateKalenderRitel = generateKalenderRitel;
+window.toggleChat = toggleChat;
+window.sendChat = sendChat;
 
 function showToast(msg) {
     const toast = document.getElementById('toastNotif');
@@ -390,7 +401,7 @@ function prosesLogin(e) {
         sessionStorage.setItem('isAdminLoggedIn', 'true');
         document.getElementById('screen-login').classList.add('d-none');
         document.getElementById('screen-main').classList.remove('d-none');
-        loadAllData();
+        initFirebaseListeners();
     } else {
         document.getElementById('login-alert').classList.remove('d-none');
     }
@@ -400,7 +411,7 @@ function initAuthView() {
     if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
         document.getElementById('screen-login').classList.add('d-none');
         document.getElementById('screen-main').classList.remove('d-none');
-        loadAllData();
+        initFirebaseListeners();
     }
 }
 
@@ -429,35 +440,34 @@ function updateStatistikDashboard() {
 
 function renderManajemenKaryawan() {
     const tbody = document.getElementById('tabelManajemenKaryawan');
-    if (!tbody) return;
     tbody.innerHTML = '';
+    if (daftarKaryawan.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Belum ada data karyawan</td></tr>';
+        return;
+    }
     daftarKaryawan.forEach((k, idx) => {
         const row = tbody.insertRow();
         row.insertCell(0).innerText = idx + 1;
         row.insertCell(1).innerHTML = `<span class="fw-bold">${k.nama}</span>`;
         row.insertCell(2).innerHTML = k.status === 'Aktif' ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-secondary">Resign</span>';
-        const actionCell = row.insertCell(3);
-        actionCell.innerHTML = k.status === 'Aktif'
-            ? `<button class="btn btn-sm btn-outline-danger btn-hapus me-1" onclick="hapusKaryawan('${k.id}','${k.nama}')"><i class="fa-solid fa-trash"></i> Hapus</button><button class="btn btn-sm btn-outline-warning" onclick="resignKaryawan('${k.id}','${k.nama}')"><i class="fa-solid fa-user-xmark"></i> Resign</button>`
-            : `<button class="btn btn-sm btn-outline-danger btn-hapus me-1" onclick="hapusKaryawan('${k.id}','${k.nama}')"><i class="fa-solid fa-trash"></i> Hapus</button><button class="btn btn-sm btn-outline-success" onclick="aktifkanKaryawan('${k.id}','${k.nama}')"><i class="fa-solid fa-rotate-left"></i> Aktifkan</button>`;
+        row.insertCell(3).innerHTML = `<button class="btn btn-sm btn-outline-danger" onclick="window.hapusKaryawan('${k.id}','${k.nama}')">Hapus</button>`;
     });
 }
 
 function generateKalenderRitel() {
     const bulanEl = document.getElementById('setBulan');
     const tahunEl = document.getElementById('setTahun');
-    if (!bulanEl || !tahunEl) return;
-
     const bln = parseInt(bulanEl.value);
     const thn = parseInt(tahunEl.value);
     const jumlahHari = new Date(thn, bln + 1, 0).getDate();
-    const namaHariIndo = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-    const namaBulanIndo = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const namaHariIndo = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+    const namaBulanIndo = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
     const karyawanAktif = daftarKaryawan.filter(k => k.status === 'Aktif');
     const tbody = document.getElementById('tabelKalenderRitel');
 
     if (karyawanAktif.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Belum ada karyawan aktif! Silakan tambah karyawan terlebih dahulu.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Belum ada karyawan aktif!</td></tr>';
+        hitungDanRenderLaporan();
         return;
     }
 
@@ -475,20 +485,14 @@ function generateKalenderRitel() {
         karyawanAktif.forEach(karyawan => {
             const keyAbsen = `${tanggalKey}_${karyawan.nama}`;
             const statusSaatIni = dataAbsensi[keyAbsen]?.status || 'Hadir';
-            let btnHClass = 'btn-outline-success', btnSClass = 'btn-outline-warning', btnIClass = 'btn-outline-info', btnAClass = 'btn-outline-danger';
-            if (statusSaatIni === 'Hadir') btnHClass = 'btn-success active';
-            if (statusSaatIni === 'Sakit') btnSClass = 'btn-warning active';
-            if (statusSaatIni === 'Izin') btnIClass = 'btn-info active';
-            if (statusSaatIni === 'Alpha') btnAClass = 'btn-danger active';
-
             htmlRows += `<div class="row g-1 mb-2 pb-1 border-bottom">
                 <div class="col-5 col-md-4"><span class="fw-bold small">${karyawan.nama}</span></div>
                 <div class="col-7 col-md-8">
                     <div class="btn-group btn-group-sm" role="group">
-                        <button type="button" class="btn ${btnHClass}" style="font-size:11px;padding:2px 8px" onclick="ubahStatus('${tanggalKey}','${karyawan.nama}','Hadir')">H</button>
-                        <button type="button" class="btn ${btnSClass}" style="font-size:11px;padding:2px 8px" onclick="ubahStatus('${tanggalKey}','${karyawan.nama}','Sakit')">S</button>
-                        <button type="button" class="btn ${btnIClass}" style="font-size:11px;padding:2px 8px" onclick="ubahStatus('${tanggalKey}','${karyawan.nama}','Izin')">I</button>
-                        <button type="button" class="btn ${btnAClass}" style="font-size:11px;padding:2px 8px" onclick="ubahStatus('${tanggalKey}','${karyawan.nama}','Alpha')">A</button>
+                        <button type="button" class="btn ${statusSaatIni==='Hadir'?'btn-success active':'btn-outline-success'}" onclick="window.ubahStatus('${tanggalKey}','${karyawan.nama}','Hadir')">H</button>
+                        <button type="button" class="btn ${statusSaatIni==='Sakit'?'btn-warning active':'btn-outline-warning'}" onclick="window.ubahStatus('${tanggalKey}','${karyawan.nama}','Sakit')">S</button>
+                        <button type="button" class="btn ${statusSaatIni==='Izin'?'btn-info active':'btn-outline-info'}" onclick="window.ubahStatus('${tanggalKey}','${karyawan.nama}','Izin')">I</button>
+                        <button type="button" class="btn ${statusSaatIni==='Alpha'?'btn-danger active':'btn-outline-danger'}" onclick="window.ubahStatus('${tanggalKey}','${karyawan.nama}','Alpha')">A</button>
                     </div>
                 </div>
             </div>`;
@@ -496,8 +500,8 @@ function generateKalenderRitel() {
 
         htmlRows += `</td>
             <td class="align-middle text-center">
-                <button class="btn btn-sm btn-outline-success w-100 mb-1" onclick="setSemuaHari('${tanggalKey}','Hadir')"><i class="fa-regular fa-circle-check"></i> H semua</button>
-                <button class="btn btn-sm btn-outline-danger w-100" onclick="setSemuaHari('${tanggalKey}','Alpha')"><i class="fa-solid fa-ban"></i> A semua</button>
+                <button class="btn btn-sm btn-outline-success w-100 mb-1" onclick="window.setSemuaHari('${tanggalKey}','Hadir')">H semua</button>
+                <button class="btn btn-sm btn-outline-danger w-100" onclick="window.setSemuaHari('${tanggalKey}','Alpha')">A semua</button>
             </td>
         </tr>`;
     }
@@ -512,8 +516,9 @@ function hitungDanRenderLaporan() {
     karyawanAktif.forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
 
     for (const [key, val] of Object.entries(dataAbsensi)) {
-        const nama = key.split('_').slice(1).join('_');
-        if (nama && rekap[nama] && rekap[nama][val.status] !== undefined) {
+        const parts = key.split('_');
+        const nama = parts.slice(1).join('_');
+        if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
             rekap[nama][val.status]++;
         }
     }
@@ -523,7 +528,7 @@ function hitungDanRenderLaporan() {
 
     karyawanAktif.forEach(k => {
         const total = rekap[k.nama].Hadir + rekap[k.nama].Sakit + rekap[k.nama].Izin + rekap[k.nama].Alpha;
-        html += `<tr><td class="text-start fw-bold">${k.nama}</td><td><span class="badge bg-success">${rekap[k.nama].Hadir}</span></td><td><span class="badge bg-warning">${rekap[k.nama].Sakit}</span></td><td><span class="badge bg-info">${rekap[k.nama].Izin}</span></td><td><span class="badge bg-danger">${rekap[k.nama].Alpha}</span></td><td><strong>${total}</strong></td></tr>`;
+        html += `<tr><td class="text-start fw-bold">${k.nama}</td><td>${rekap[k.nama].Hadir}</td><td>${rekap[k.nama].Sakit}</td><td>${rekap[k.nama].Izin}</td><td>${rekap[k.nama].Alpha}</td><td><strong>${total}</strong></td></tr>`;
         labels.push(k.nama);
         dataHadir.push(rekap[k.nama].Hadir);
         dataSakit.push(rekap[k.nama].Sakit);
@@ -568,16 +573,13 @@ async function tambahSurat(e) {
 function downloadMemoPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.setFontSize(20);
     doc.text('MEMORANDUM', 105, 20, { align: 'center' });
-    doc.setFontSize(11);
     doc.text(`DARI: ${document.getElementById('memoDari').value || '-'}`, 20, 40);
     doc.text(`KEPADA: ${document.getElementById('memoKepada').value || '-'}`, 20, 50);
     doc.text(`TANGGAL: ${document.getElementById('memoTanggal').value || '-'}`, 20, 60);
     doc.text(`PERIHAL: ${document.getElementById('memoPerihal').value || '-'}`, 20, 70);
     doc.text(doc.splitTextToSize(document.getElementById('memoIsi').value || '-', 170), 20, 85);
     doc.save('Memo_Toserba.pdf');
-    showToast('PDF berhasil diunduh!');
 }
 
 async function tambahKaryawanBaru() {
@@ -593,29 +595,12 @@ async function tambahKaryawanBaru() {
 async function hapusKaryawan(id, nama) {
     if (!confirm(`Hapus permanen karyawan "${nama}"?`)) return;
     await remove(ref(database, `karyawan/${id}`));
-    const snap = await get(ref(database, 'absensi'));
-    const absensiData = snap.val() || {};
-    for (const key of Object.keys(absensiData)) {
-        if (key.includes(`_${nama}`)) await remove(ref(database, `absensi/${key}`));
-    }
     showToast(`Karyawan ${nama} telah dihapus!`);
-}
-
-async function resignKaryawan(id, nama) {
-    if (!confirm(`Resign karyawan ${nama}?`)) return;
-    await update(ref(database, `karyawan/${id}`), { status: 'Resign' });
-    showToast(`${nama} status Resign`);
-}
-
-async function aktifkanKaryawan(id, nama) {
-    await update(ref(database, `karyawan/${id}`), { status: 'Aktif' });
-    showToast(`${nama} diaktifkan kembali`);
 }
 
 async function ubahStatus(tanggal, karyawan, statusBaru) {
     const key = `${tanggal}_${karyawan}`;
     await set(ref(database, `absensi/${key}`), { status: statusBaru });
-    showToast(`${karyawan}: ${statusBaru}`);
 }
 
 async function setSemuaHari(tanggal, status) {
@@ -624,91 +609,79 @@ async function setSemuaHari(tanggal, status) {
         const key = `${tanggal}_${karyawan.nama}`;
         await set(ref(database, `absensi/${key}`), { status });
     }
-    showToast(`Semua karyawan tanggal ${tanggal} status = ${status}`);
 }
 
 function exportToExcel() {
-    const karyawanAktif = daftarKaryawan.filter(k => k.status === 'Aktif');
+    const data = [['Nama', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Total']];
     const rekap = {};
-    karyawanAktif.forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
+    daftarKaryawan.filter(k => k.status === 'Aktif').forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
 
     for (const [key, val] of Object.entries(dataAbsensi)) {
-        const nama = key.split('_').slice(1).join('_');
-        if (nama && rekap[nama] && rekap[nama][val.status] !== undefined) rekap[nama][val.status]++;
+        const parts = key.split('_');
+        const nama = parts.slice(1).join('_');
+        if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
+            rekap[nama][val.status]++;
+        }
     }
 
-    const wsData = [['Nama Karyawan', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Total Tidak Hadir']];
-    karyawanAktif.forEach(k => {
-        const tidakHadir = rekap[k.nama].Sakit + rekap[k.nama].Izin + rekap[k.nama].Alpha;
-        wsData.push([k.nama, rekap[k.nama].Hadir, rekap[k.nama].Sakit, rekap[k.nama].Izin, rekap[k.nama].Alpha, tidakHadir]);
-    });
+    for (const [nama, stat] of Object.entries(rekap)) {
+        const total = stat.Hadir + stat.Sakit + stat.Izin + stat.Alpha;
+        data.push([nama, stat.Hadir, stat.Sakit, stat.Izin, stat.Alpha, total]);
+    }
 
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Laporan Absensi');
     XLSX.writeFile(wb, 'Laporan_Absensi_Toserba.xlsx');
-    showToast('Export Excel berhasil!');
 }
 
 function exportToPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({ orientation: 'landscape' });
-    doc.text('LAPORAN KEHADIRAN KARYAWAN TOSERBA ENAK', 14, 15);
-    doc.text(`Periode: ${document.getElementById('setBulan').options[document.getElementById('setBulan').selectedIndex].text} ${document.getElementById('setTahun').value}`, 14, 25);
-
-    const karyawanAktif = daftarKaryawan.filter(k => k.status === 'Aktif');
+    doc.text('LAPORAN KEHADIRAN KARYAWAN', 14, 15);
+    
     const rekap = {};
-    karyawanAktif.forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
+    daftarKaryawan.filter(k => k.status === 'Aktif').forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
 
     for (const [key, val] of Object.entries(dataAbsensi)) {
-        const nama = key.split('_').slice(1).join('_');
-        if (nama && rekap[nama] && rekap[nama][val.status] !== undefined) rekap[nama][val.status]++;
+        const parts = key.split('_');
+        const nama = parts.slice(1).join('_');
+        if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
+            rekap[nama][val.status]++;
+        }
     }
 
-    const tableData = karyawanAktif.map(k => [
-        k.nama,
-        rekap[k.nama].Hadir,
-        rekap[k.nama].Sakit,
-        rekap[k.nama].Izin,
-        rekap[k.nama].Alpha,
-        rekap[k.nama].Sakit + rekap[k.nama].Izin + rekap[k.nama].Alpha
-    ]);
+    const tableData = [];
+    for (const [nama, stat] of Object.entries(rekap)) {
+        const total = stat.Hadir + stat.Sakit + stat.Izin + stat.Alpha;
+        tableData.push([nama, stat.Hadir, stat.Sakit, stat.Izin, stat.Alpha, total]);
+    }
 
-    doc.autoTable({
-        head: [['Nama', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Tidak Hadir']],
-        body: tableData,
-        startY: 32,
-        theme: 'grid',
-        styles: { fontSize: 9 },
-        headStyles: { fillColor: [40, 40, 40] }
-    });
-
+    if (tableData.length > 0) {
+        doc.autoTable({
+            head: [['Nama', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Total']],
+            body: tableData,
+            startY: 25
+        });
+    }
+    
     doc.save('Laporan_Absensi_Toserba.pdf');
-    showToast('Export PDF berhasil!');
 }
 
-/* CHAT */
 function toggleChat() {
     const panel = document.getElementById('chatPanel');
-    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    panel.style.display = panel.style.display === 'none' || panel.style.display === '' ? 'block' : 'none';
 }
 
 function renderChat(messages) {
     const box = document.getElementById('chatMessages');
     box.innerHTML = '';
-
-    messages.forEach((m, i) => {
+    messages.forEach(m => {
         const div = document.createElement('div');
         div.className = 'msg';
-        div.innerHTML = `
-            <strong>${m.name || 'Anonim'}</strong>
-            <small>${m.time || ''}</small>
-            <div>${m.text || ''}</div>
-            <span class="badge bg-secondary mt-1">${i + 1}/${messages.length}</span>
-        `;
+        div.innerHTML = `<strong>${m.name || 'Anonim'}</strong><small>${m.time || ''}</small><div>${m.text || ''}</div>`;
         box.appendChild(div);
     });
-
     box.scrollTop = box.scrollHeight;
     document.getElementById('chatBadge').innerText = messages.length;
 }
@@ -717,104 +690,102 @@ async function sendChat() {
     const name = document.getElementById('chatName').value.trim() || 'Anonim';
     const text = document.getElementById('chatInput').value.trim();
     if (!text) return;
-
     const newRef = push(ref(database, 'chat'));
-    await set(newRef, {
-        name,
-        text,
-        time: new Date().toLocaleString('id-ID')
-    });
-
+    await set(newRef, { name, text, time: new Date().toLocaleString('id-ID') });
     document.getElementById('chatInput').value = '';
 }
 
-/* LISTENER */
 function initFirebaseListeners() {
-    if (listenersReady) return;
-    listenersReady = true;
-
-    onValue(ref(database, 'surat'), snap => {
+    console.log('Initializing Firebase listeners...');
+    
+    onValue(ref(database, 'surat'), (snap) => {
         const data = snap.val();
+        console.log('Data surat dari Firebase:', data);
         dataSurat = data ? Object.values(data) : [];
         renderTabelSurat();
         updateStatSurat();
+    }, (error) => {
+        console.error('Error loading surat:', error);
+        showToast('Gagal memuat data surat!');
     });
 
-    onValue(ref(database, 'karyawan'), snap => {
+    onValue(ref(database, 'karyawan'), (snap) => {
         const data = snap.val();
-        daftarKaryawan = data ? Object.entries(data).map(([id, val]) => ({
-            id,
-            nama: val.nama,
-            status: val.status || 'Aktif'
-        })) : [];
-
-        if (daftarKaryawan.length === 0) {
+        console.log('Data karyawan dari Firebase:', data);
+        
+        if (!data || Object.keys(data).length === 0) {
+            console.log('Database kosong, menambahkan seed data...');
             const seedData = ["Budi Santoso", "Sinta Dewi", "Andi Wijaya", "Rina Marlina"];
-            seedData.forEach(async nama => {
+            seedData.forEach(async (nama) => {
                 const newRef = push(ref(database, 'karyawan'));
                 await set(newRef, { nama, status: 'Aktif' });
             });
             return;
         }
-
+        
+        daftarKaryawan = Object.entries(data).map(([id, val]) => ({
+            id,
+            nama: val.nama || 'Unknown',
+            status: val.status || 'Aktif'
+        }));
+        
         updateStatistikDashboard();
         renderManajemenKaryawan();
         generateKalenderRitel();
+    }, (error) => {
+        console.error('Error loading karyawan:', error);
+        showToast('Gagal memuat data karyawan!');
     });
 
-    onValue(ref(database, 'absensi'), snap => {
-        dataAbsensi = snap.val() || {};
+    onValue(ref(database, 'absensi'), (snap) => {
+        const data = snap.val();
+        console.log('Data absensi dari Firebase:', data);
+        dataAbsensi = data || {};
         generateKalenderRitel();
+    }, (error) => {
+        console.error('Error loading absensi:', error);
+        showToast('Gagal memuat data absensi!');
     });
 
-    onValue(ref(database, 'chat'), snap => {
+    onValue(ref(database, 'chat'), (snap) => {
         const data = snap.val();
         const messages = data ? Object.values(data) : [];
         renderChat(messages);
+    }, (error) => {
+        console.error('Error loading chat:', error);
     });
 
-    showToast('Mengambil data dari Firebase...');
+    renderMemoPreview();
+    showToast('Terhubung ke Firebase!');
 }
 
-/* WINDOW */
-window.prosesLogin = prosesLogin;
-window.prosesLogout = prosesLogout;
-window.bukaTab = bukaTab;
-window.tambahSurat = tambahSurat;
-window.downloadMemoPDF = downloadMemoPDF;
-window.tambahKaryawanBaru = tambahKaryawanBaru;
-window.hapusKaryawan = hapusKaryawan;
-window.resignKaryawan = resignKaryawan;
-window.aktifkanKaryawan = aktifkanKaryawan;
-window.ubahStatus = ubahStatus;
-window.setSemuaHari = setSemuaHari;
-window.exportToExcel = exportToExcel;
-window.exportToPDF = exportToPDF;
-window.generateKalenderRitel = generateKalenderRitel;
-window.toggleChat = toggleChat;
-window.sendChat = sendChat;
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, setting up event listeners...');
+    
+    document.getElementById('chatToggleBtn').addEventListener('click', toggleChat);
+    document.getElementById('closeChatBtn').addEventListener('click', toggleChat);
+    document.getElementById('sendChatBtn').addEventListener('click', sendChat);
 
-/* EVENTS */
-document.getElementById('chatToggleBtn').addEventListener('click', toggleChat);
-document.getElementById('closeChatBtn').addEventListener('click', toggleChat);
-document.getElementById('sendChatBtn').addEventListener('click', sendChat);
-document.getElementById('chatInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendChat();
-    }
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChat();
+        }
+    });
+
+    document.getElementById('memoDari').addEventListener('input', renderMemoPreview);
+    document.getElementById('memoKepada').addEventListener('input', renderMemoPreview);
+    document.getElementById('memoTanggal').addEventListener('input', renderMemoPreview);
+    document.getElementById('memoPerihal').addEventListener('input', renderMemoPreview);
+    document.getElementById('memoIsi').addEventListener('input', renderMemoPreview);
+    document.getElementById('setBulan').addEventListener('change', generateKalenderRitel);
+    document.getElementById('setTahun').addEventListener('change', generateKalenderRitel);
+
+    initAuthView();
+    renderMemoPreview();
 });
 
-document.getElementById('memoDari').addEventListener('input', renderMemoPreview);
-document.getElementById('memoKepada').addEventListener('input', renderMemoPreview);
-document.getElementById('memoTanggal').addEventListener('input', renderMemoPreview);
-document.getElementById('memoPerihal').addEventListener('input', renderMemoPreview);
-document.getElementById('memoIsi').addEventListener('input', renderMemoPreview);
-document.getElementById('setBulan').addEventListener('change', generateKalenderRitel);
-document.getElementById('setTahun').addEventListener('change', generateKalenderRitel);
-
-initAuthView();
-renderMemoPreview();
 </script>
 </body>
 </html>
