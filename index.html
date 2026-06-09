@@ -41,7 +41,7 @@ body { background: #f8f9fa; }
     position: fixed;
     right: 20px;
     bottom: 90px;
-    width: 340px;
+    width: 380px;
     max-width: 90vw;
     z-index: 9999;
     display: none;
@@ -64,6 +64,55 @@ body { background: #f8f9fa; }
 #chatMessages .msg small {
     display: block;
     color: #666;
+}
+.file-upload-area {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.file-upload-area:hover {
+    border-color: #0dcaf0;
+    background: #f0f9ff;
+}
+.file-list {
+    max-height: 100px;
+    overflow-y: auto;
+    margin-top: 5px;
+}
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 5px;
+    background: #f8f9fa;
+    margin-bottom: 2px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+.delete-absensi-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tanda-tangan-area {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
 }
 </style>
 </head>
@@ -160,11 +209,17 @@ body { background: #f8f9fa; }
                 </div>
                 <div class="col-lg-8 col-md-7">
                     <div class="card shadow-sm border-0">
-                        <div class="card-header bg-secondary text-white fw-bold small">Arsip Log Surat</div>
+                        <div class="card-header bg-secondary text-white fw-bold small d-flex justify-content-between align-items-center">
+                            <span>Arsip Log Surat</span>
+                            <div>
+                                <button class="btn btn-sm btn-light" onclick="exportSuratPDF()"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                                <button class="btn btn-sm btn-light" onclick="exportSuratExcel()"><i class="fa-solid fa-file-excel"></i> Excel</button>
+                            </div>
+                        </div>
                         <div class="card-body table-responsive p-0">
                             <table class="table table-sm table-striped m-0 align-middle">
                                 <thead class="table-dark">
-                                    <tr><th>Jenis</th><th>No. Surat</th><th>Asal/Tujuan</th><th>Perihal</th></tr>
+                                    <tr><th>Jenis</th><th>No. Surat</th><th>Asal/Tujuan</th><th>Perihal</th><th>Tanggal</th></tr>
                                 </thead>
                                 <tbody id="tabelSurat"></tbody>
                             </table>
@@ -242,10 +297,18 @@ body { background: #f8f9fa; }
                             <label class="small fw-bold">Tahun</label>
                             <input type="number" id="setTahun" class="form-control form-control-sm" value="2026">
                         </div>
+                        <div class="col-md-2">
+                            <label class="small fw-bold">Periode</label>
+                            <select id="setPeriode" class="form-select form-select-sm">
+                                <option value="1">Periode 1 (1-15)</option>
+                                <option value="2">Periode 2 (16-akhir)</option>
+                                <option value="0">Full Bulan</option>
+                            </select>
+                        </div>
                         <div class="col-md-3">
                             <button onclick="generateKalenderRitel()" class="btn btn-primary btn-sm w-100">Muat Kalender Absen</button>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <div class="d-flex gap-2">
                                 <button onclick="exportToExcel()" class="btn btn-sm btn-success flex-grow-1">Export Excel</button>
                                 <button onclick="exportToPDF()" class="btn btn-sm btn-danger flex-grow-1">Export PDF</button>
@@ -277,24 +340,49 @@ body { background: #f8f9fa; }
             </div>
 
             <div class="row g-3 mt-4">
-                <div class="col-xl-7">
+                <div class="col-xl-8">
                     <div class="card shadow-sm border-0">
-                        <div class="card-header bg-dark text-white fw-bold">Rekap Kehadiran Karyawan</div>
-                        <div class="card-body p-0 table-responsive" style="max-height:350px">
-                            <table class="table table-sm table-striped text-center m-0" style="font-size:12px">
+                        <div class="card-header bg-dark text-white fw-bold">Rekap Detail Kehadiran Karyawan</div>
+                        <div class="card-body p-0 table-responsive" style="max-height:400px">
+                            <table class="table table-sm table-striped text-center m-0" style="font-size:11px">
                                 <thead class="table-secondary">
-                                    <tr><th>Nama</th><th>Hadir</th><th>Sakit</th><th>Izin</th><th>Alpha</th><th>Total</th></tr>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Hadir</th>
+                                        <th>Sakit</th>
+                                        <th>Izin</th>
+                                        <th>Alpha</th>
+                                        <th>Total</th>
+                                        <th>Detail Per Hari</th>
+                                    </tr>
                                 </thead>
-                                <tbody id="tabelReportAbsen"><tr><td colspan="6" class="text-muted">-</td></tr></tbody>
+                                <tbody id="tabelReportAbsen"><tr><td colspan="7" class="text-muted">-</td></tr></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-5">
+                <div class="col-xl-4">
                     <div class="card shadow-sm border-0">
                         <div class="card-header bg-secondary text-white fw-bold">Grafik Statistik</div>
                         <div class="card-body p-2">
                             <div class="chart-container"><canvas id="chartAbsenRitel"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="card shadow-sm border-0 mt-3">
+                        <div class="card-header bg-info text-white fw-bold">Tanda Tangan Manager</div>
+                        <div class="card-body tanda-tangan-area">
+                            <div class="mb-2">
+                                <label class="small fw-bold">Nama Manager</label>
+                                <input type="text" id="namaManager" class="form-control form-control-sm" value="Ahmad Subarjo">
+                            </div>
+                            <div class="mb-2">
+                                <label class="small fw-bold">Jabatan</label>
+                                <input type="text" id="jabatanManager" class="form-control form-control-sm" value="Store Manager">
+                            </div>
+                            <div class="mb-2">
+                                <label class="small fw-bold">Catatan</label>
+                                <textarea id="catatanManager" class="form-control form-control-sm" rows="2">Disetujui dan diverifikasi</textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -315,6 +403,12 @@ body { background: #f8f9fa; }
     </div>
     <div class="card-body p-2">
         <div id="chatMessages"></div>
+        <div class="file-upload-area mt-2" id="fileUploadArea">
+            <i class="fa-solid fa-cloud-upload"></i> 
+            <small>Klik untuk upload file (PDF, DOCX, XLSX, JPG, PPT)</small>
+            <input type="file" id="fileInput" style="display:none" multiple accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png,.ppt,.pptx">
+        </div>
+        <div class="file-list" id="fileList"></div>
         <div class="mt-2">
             <input type="text" id="chatName" class="form-control form-control-sm mb-2" placeholder="Nama kamu">
             <textarea id="chatInput" class="form-control form-control-sm mb-2" rows="2" placeholder="Tulis pesan..."></textarea>
@@ -329,10 +423,15 @@ body { background: #f8f9fa; }
     </div>
 </div>
 
-<!-- GANTI MENJADI SCRIPT TYPE MODULE YANG DIPISAH ATAU GUNAKAN CARA LAIN -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import { getDatabase, ref, set, get, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
+
+// ==================== KONFIGURASI APPS SCRIPT ====================
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-O0hWl9WuYDTTvlGmJTV1O9ELCFxsoEapQNDbd8fsTQU1qlsaOCQcOE6py3tPl-ZE/exec";
+const API_KEY = "toserbaenak123";
+// ================================================================
 
 const firebaseConfig = {
     apiKey: "AIzaSyCKtNlMr5NLj8-dYFUHVHTd_-tTyGpQC4U",
@@ -346,13 +445,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const storage = getStorage(app);
 
 let daftarKaryawan = [];
 let dataAbsensi = {};
 let dataSurat = [];
 let chartInstance = null;
+let selectedFiles = [];
 
-// EXPOSE FUNCTIONS TO GLOBAL SCOPE
 window.prosesLogin = prosesLogin;
 window.prosesLogout = prosesLogout;
 window.bukaTab = bukaTab;
@@ -362,8 +462,11 @@ window.tambahKaryawanBaru = tambahKaryawanBaru;
 window.hapusKaryawan = hapusKaryawan;
 window.ubahStatus = ubahStatus;
 window.setSemuaHari = setSemuaHari;
+window.hapusDataAbsen = hapusDataAbsen;
 window.exportToExcel = exportToExcel;
 window.exportToPDF = exportToPDF;
+window.exportSuratPDF = exportSuratPDF;
+window.exportSuratExcel = exportSuratExcel;
 window.generateKalenderRitel = generateKalenderRitel;
 window.toggleChat = toggleChat;
 window.sendChat = sendChat;
@@ -419,12 +522,19 @@ function renderTabelSurat() {
     const tbody = document.getElementById('tabelSurat');
     tbody.innerHTML = '';
     if (dataSurat.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">Belum ada surat</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Belum ada surat</td></tr>';
         return;
     }
     dataSurat.forEach(s => {
         const color = s.jenis === 'Masuk' ? 'bg-success' : 'bg-warning text-dark';
-        tbody.innerHTML += `<tr><td><span class="badge ${color}">${s.jenis}</span></td><td>${s.noSurat}</td><td>${s.kontak}</td><td>${s.perihal}</td></tr>`;
+        const tanggal = s.createdAt ? new Date(s.createdAt).toLocaleDateString('id-ID') : '-';
+        tbody.innerHTML += `<tr>
+            <td><span class="badge ${color}">${s.jenis}</span></td>
+            <td>${s.noSurat}</td>
+            <td>${s.kontak}</td>
+            <td>${s.perihal}</td>
+            <td><small>${tanggal}</small></td>
+        </tr>`;
     });
 }
 
@@ -457,9 +567,21 @@ function renderManajemenKaryawan() {
 function generateKalenderRitel() {
     const bulanEl = document.getElementById('setBulan');
     const tahunEl = document.getElementById('setTahun');
+    const periodeEl = document.getElementById('setPeriode');
     const bln = parseInt(bulanEl.value);
     const thn = parseInt(tahunEl.value);
+    const periode = parseInt(periodeEl.value);
     const jumlahHari = new Date(thn, bln + 1, 0).getDate();
+    
+    let startHari = 1;
+    let endHari = jumlahHari;
+    
+    if (periode === 1) {
+        endHari = 15;
+    } else if (periode === 2) {
+        startHari = 16;
+    }
+    
     const namaHariIndo = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
     const namaBulanIndo = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
     const karyawanAktif = daftarKaryawan.filter(k => k.status === 'Aktif');
@@ -472,13 +594,17 @@ function generateKalenderRitel() {
     }
 
     let htmlRows = '';
-    for (let h = 1; h <= jumlahHari; h++) {
+    for (let h = startHari; h <= endHari; h++) {
         const dateObj = new Date(thn, bln, h);
         const hariNama = namaHariIndo[dateObj.getDay()];
         const tanggalKey = `${thn}-${bln + 1}-${h}`;
 
-        htmlRows += `<tr style="vertical-align:top">
-            <td class="align-middle text-center"><strong>${h} ${namaBulanIndo[bln]} ${thn}</strong><br><span class="badge bg-secondary">${hariNama}</span></td>
+        htmlRows += `<tr style="vertical-align:top; position:relative;">
+            <td class="align-middle text-center">
+                <strong>${h} ${namaBulanIndo[bln]} ${thn}</strong><br>
+                <span class="badge bg-secondary">${hariNama}</span>
+                <button class="delete-absensi-btn" onclick="window.hapusDataAbsen('${tanggalKey}')" title="Hapus semua absen tanggal ini">×</button>
+             </td>
             <td class="align-middle text-center">${hariNama}</td>
             <td class="p-2">`;
 
@@ -502,8 +628,8 @@ function generateKalenderRitel() {
             <td class="align-middle text-center">
                 <button class="btn btn-sm btn-outline-success w-100 mb-1" onclick="window.setSemuaHari('${tanggalKey}','Hadir')">H semua</button>
                 <button class="btn btn-sm btn-outline-danger w-100" onclick="window.setSemuaHari('${tanggalKey}','Alpha')">A semua</button>
-            </td>
-        </tr>`;
+              </td>
+         </tr>`;
     }
 
     tbody.innerHTML = htmlRows;
@@ -511,15 +637,34 @@ function generateKalenderRitel() {
 }
 
 function hitungDanRenderLaporan() {
+    const bulanEl = document.getElementById('setBulan');
+    const tahunEl = document.getElementById('setTahun');
+    const periodeEl = document.getElementById('setPeriode');
+    const bln = parseInt(bulanEl.value);
+    const thn = parseInt(tahunEl.value);
+    const periode = parseInt(periodeEl.value);
+    const namaBulanIndo = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    
     const karyawanAktif = daftarKaryawan.filter(k => k.status === 'Aktif');
     const rekap = {};
-    karyawanAktif.forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
+    
+    karyawanAktif.forEach(k => {
+        rekap[k.nama] = { 
+            Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0,
+            detailHarian: {}
+        };
+    });
 
     for (const [key, val] of Object.entries(dataAbsensi)) {
         const parts = key.split('_');
+        const tanggal = parts[0];
         const nama = parts.slice(1).join('_');
+        
         if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
             rekap[nama][val.status]++;
+            const tanggalParts = tanggal.split('-');
+            const hari = parseInt(tanggalParts[2]);
+            rekap[nama].detailHarian[hari] = val.status;
         }
     }
 
@@ -528,7 +673,32 @@ function hitungDanRenderLaporan() {
 
     karyawanAktif.forEach(k => {
         const total = rekap[k.nama].Hadir + rekap[k.nama].Sakit + rekap[k.nama].Izin + rekap[k.nama].Alpha;
-        html += `<tr><td class="text-start fw-bold">${k.nama}</td><td>${rekap[k.nama].Hadir}</td><td>${rekap[k.nama].Sakit}</td><td>${rekap[k.nama].Izin}</td><td>${rekap[k.nama].Alpha}</td><td><strong>${total}</strong></td></tr>`;
+        
+        let detailString = '';
+        const jumlahHari = new Date(thn, bln + 1, 0).getDate();
+        for (let h = 1; h <= jumlahHari; h++) {
+            const status = rekap[k.nama].detailHarian[h] || '-';
+            let badge = '';
+            switch(status) {
+                case 'Hadir': badge = '<span class="badge bg-success">H</span>'; break;
+                case 'Sakit': badge = '<span class="badge bg-warning">S</span>'; break;
+                case 'Izin': badge = '<span class="badge bg-info">I</span>'; break;
+                case 'Alpha': badge = '<span class="badge bg-danger">A</span>'; break;
+                default: badge = '<span class="badge bg-light text-dark">-</span>';
+            }
+            detailString += badge + ' ';
+        }
+        
+        html += `<tr>
+            <td class="text-start fw-bold">${k.nama}</td>
+            <td>${rekap[k.nama].Hadir}</td>
+            <td>${rekap[k.nama].Sakit}</td>
+            <td>${rekap[k.nama].Izin}</td>
+            <td>${rekap[k.nama].Alpha}</td>
+            <td><strong>${total}</strong></td>
+            <td><small>${detailString}</small></td>
+         </tr>`;
+        
         labels.push(k.nama);
         dataHadir.push(rekap[k.nama].Hadir);
         dataSakit.push(rekap[k.nama].Sakit);
@@ -536,7 +706,7 @@ function hitungDanRenderLaporan() {
         dataAlpha.push(rekap[k.nama].Alpha);
     });
 
-    document.getElementById('tabelReportAbsen').innerHTML = html || '<tr><td colspan="6" class="text-muted">Tidak ada data</td></tr>';
+    document.getElementById('tabelReportAbsen').innerHTML = html || '<tr><td colspan="7" class="text-muted">Tidak ada data</td></tr>';
 
     const ctx = document.getElementById('chartAbsenRitel');
     if (!ctx) return;
@@ -552,7 +722,22 @@ function hitungDanRenderLaporan() {
                 { label: 'Alpha', data: dataAlpha, backgroundColor: '#dc3545' }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            scales: { 
+                y: { 
+                    beginAtZero: true, 
+                    ticks: { stepSize: 1 } 
+                } 
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: `Statistik Absensi ${namaBulanIndo[bln]} ${thn}`
+                }
+            }
+        }
     });
 }
 
@@ -611,61 +796,191 @@ async function setSemuaHari(tanggal, status) {
     }
 }
 
-function exportToExcel() {
-    const data = [['Nama', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Total']];
-    const rekap = {};
-    daftarKaryawan.filter(k => k.status === 'Aktif').forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
-
-    for (const [key, val] of Object.entries(dataAbsensi)) {
-        const parts = key.split('_');
-        const nama = parts.slice(1).join('_');
-        if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
-            rekap[nama][val.status]++;
-        }
+async function hapusDataAbsen(tanggal) {
+    if (!confirm(`Hapus SEMUA data absen untuk tanggal ${tanggal}?`)) return;
+    
+    const karyawanAktif = daftarKaryawan.filter(k => k.status === 'Aktif');
+    for (const karyawan of karyawanAktif) {
+        const key = `${tanggal}_${karyawan.nama}`;
+        await remove(ref(database, `absensi/${key}`));
     }
-
-    for (const [nama, stat] of Object.entries(rekap)) {
-        const total = stat.Hadir + stat.Sakit + stat.Izin + stat.Alpha;
-        data.push([nama, stat.Hadir, stat.Sakit, stat.Izin, stat.Alpha, total]);
-    }
-
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Laporan Absensi');
-    XLSX.writeFile(wb, 'Laporan_Absensi_Toserba.xlsx');
+    showToast(`Data absen tanggal ${tanggal} dihapus!`);
 }
 
-function exportToPDF() {
+function exportSuratPDF() {
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: 'landscape' });
-    doc.text('LAPORAN KEHADIRAN KARYAWAN', 14, 15);
+    const doc = new jsPDF();
     
-    const rekap = {};
-    daftarKaryawan.filter(k => k.status === 'Aktif').forEach(k => rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0 });
-
-    for (const [key, val] of Object.entries(dataAbsensi)) {
-        const parts = key.split('_');
-        const nama = parts.slice(1).join('_');
-        if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
-            rekap[nama][val.status]++;
-        }
-    }
-
-    const tableData = [];
-    for (const [nama, stat] of Object.entries(rekap)) {
-        const total = stat.Hadir + stat.Sakit + stat.Izin + stat.Alpha;
-        tableData.push([nama, stat.Hadir, stat.Sakit, stat.Izin, stat.Alpha, total]);
-    }
-
+    doc.text('ARSIP SURAT TOSERBA ENAK', 105, 15, { align: 'center' });
+    doc.setFontSize(10);
+    
+    const tableData = dataSurat.map(s => [
+        s.jenis,
+        s.noSurat,
+        s.kontak,
+        s.perihal,
+        s.createdAt ? new Date(s.createdAt).toLocaleDateString('id-ID') : '-'
+    ]);
+    
     if (tableData.length > 0) {
         doc.autoTable({
-            head: [['Nama', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Total']],
+            head: [['Jenis', 'No. Surat', 'Asal/Tujuan', 'Perihal', 'Tanggal']],
             body: tableData,
             startY: 25
         });
     }
     
-    doc.save('Laporan_Absensi_Toserba.pdf');
+    doc.save('Arsip_Surat_Toserba.pdf');
+    showToast('PDF surat berhasil diunduh!');
+}
+
+function exportSuratExcel() {
+    const data = [['Jenis', 'No. Surat', 'Asal/Tujuan', 'Perihal', 'Tanggal']];
+    
+    dataSurat.forEach(s => {
+        data.push([
+            s.jenis,
+            s.noSurat,
+            s.kontak,
+            s.perihal,
+            s.createdAt ? new Date(s.createdAt).toLocaleDateString('id-ID') : '-'
+        ]);
+    });
+    
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Arsip Surat');
+    XLSX.writeFile(wb, 'Arsip_Surat_Toserba.xlsx');
+    showToast('Excel surat berhasil diunduh!');
+}
+
+function exportToExcel() {
+    const bulanEl = document.getElementById('setBulan');
+    const tahunEl = document.getElementById('setTahun');
+    const periodeEl = document.getElementById('setPeriode');
+    const bln = parseInt(bulanEl.value);
+    const thn = parseInt(tahunEl.value);
+    const periode = parseInt(periodeEl.value);
+    const namaBulanIndo = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    
+    let periodeText = 'Full Bulan';
+    if (periode === 1) periodeText = 'Periode 1 (1-15)';
+    if (periode === 2) periodeText = 'Periode 2 (16-akhir)';
+    
+    const data = [['LAPORAN KEHADIRAN KARYAWAN'], 
+                  [`Bulan: ${namaBulanIndo[bln]} ${thn} - ${periodeText}`],
+                  [''],
+                  ['Nama', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Total', 'Detail Per Hari']];
+    
+    const rekap = {};
+    daftarKaryawan.filter(k => k.status === 'Aktif').forEach(k => {
+        rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0, detailHarian: {} };
+    });
+
+    for (const [key, val] of Object.entries(dataAbsensi)) {
+        const parts = key.split('_');
+        const tanggal = parts[0];
+        const nama = parts.slice(1).join('_');
+        if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
+            rekap[nama][val.status]++;
+            const hari = parseInt(tanggal.split('-')[2]);
+            rekap[nama].detailHarian[hari] = val.status;
+        }
+    }
+
+    const jumlahHari = new Date(thn, bln + 1, 0).getDate();
+    
+    for (const [nama, stat] of Object.entries(rekap)) {
+        const total = stat.Hadir + stat.Sakit + stat.Izin + stat.Alpha;
+        let detailString = '';
+        for (let h = 1; h <= jumlahHari; h++) {
+            detailString += (stat.detailHarian[h] || '-') + ' ';
+        }
+        data.push([nama, stat.Hadir, stat.Sakit, stat.Izin, stat.Alpha, total, detailString.trim()]);
+    }
+    
+    data.push(['']);
+    data.push(['Tanda Tangan Manager:']);
+    data.push([document.getElementById('namaManager').value]);
+    data.push([document.getElementById('jabatanManager').value]);
+    data.push([document.getElementById('catatanManager').value]);
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Laporan Absensi');
+    XLSX.writeFile(wb, `Laporan_Absensi_${namaBulanIndo[bln]}_${thn}.xlsx`);
+    showToast('Excel absensi berhasil diunduh!');
+}
+
+function exportToPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape' });
+    const bulanEl = document.getElementById('setBulan');
+    const tahunEl = document.getElementById('setTahun');
+    const periodeEl = document.getElementById('setPeriode');
+    const bln = parseInt(bulanEl.value);
+    const thn = parseInt(tahunEl.value);
+    const periode = parseInt(periodeEl.value);
+    const namaBulanIndo = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+    
+    let periodeText = 'Full Bulan';
+    if (periode === 1) periodeText = 'Periode 1 (1-15)';
+    if (periode === 2) periodeText = 'Periode 2 (16-akhir)';
+    
+    doc.setFontSize(16);
+    doc.text('LAPORAN KEHADIRAN KARYAWAN', 14, 15);
+    doc.setFontSize(12);
+    doc.text(`Toserba Enak - ${namaBulanIndo[bln]} ${thn}`, 14, 22);
+    doc.setFontSize(10);
+    doc.text(`Periode: ${periodeText}`, 14, 28);
+    
+    const rekap = {};
+    daftarKaryawan.filter(k => k.status === 'Aktif').forEach(k => {
+        rekap[k.nama] = { Hadir: 0, Sakit: 0, Izin: 0, Alpha: 0, detailHarian: {} };
+    });
+
+    for (const [key, val] of Object.entries(dataAbsensi)) {
+        const parts = key.split('_');
+        const tanggal = parts[0];
+        const nama = parts.slice(1).join('_');
+        if (nama && rekap[nama] && val && rekap[nama][val.status] !== undefined) {
+            rekap[nama][val.status]++;
+            const hari = parseInt(tanggal.split('-')[2]);
+            rekap[nama].detailHarian[hari] = val.status;
+        }
+    }
+
+    const tableData = [];
+    const jumlahHari = new Date(thn, bln + 1, 0).getDate();
+    
+    for (const [nama, stat] of Object.entries(rekap)) {
+        const total = stat.Hadir + stat.Sakit + stat.Izin + stat.Alpha;
+        let detailString = '';
+        for (let h = 1; h <= jumlahHari; h++) {
+            detailString += (stat.detailHarian[h] || '-') + ' ';
+        }
+        tableData.push([nama, stat.Hadir, stat.Sakit, stat.Izin, stat.Alpha, total, detailString.trim()]);
+    }
+
+    if (tableData.length > 0) {
+        doc.autoTable({
+            head: [['Nama', 'Hadir', 'Sakit', 'Izin', 'Alpha', 'Total', 'Detail Per Hari (H/S/I/A)']],
+            body: tableData,
+            startY: 35,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [52, 58, 64] }
+        });
+    }
+    
+    const finalY = doc.lastAutoTable.finalY + 20;
+    doc.setFontSize(10);
+    doc.text(`Tanda Tangan Manager:`, 14, finalY);
+    doc.text(`${document.getElementById('namaManager').value}`, 14, finalY + 10);
+    doc.text(`${document.getElementById('jabatanManager').value}`, 14, finalY + 16);
+    doc.text(`${document.getElementById('catatanManager').value}`, 14, finalY + 22);
+    
+    doc.save(`Laporan_Absensi_${namaBulanIndo[bln]}_${thn}.pdf`);
+    showToast('PDF absensi berhasil diunduh!');
 }
 
 function toggleChat() {
@@ -679,20 +994,141 @@ function renderChat(messages) {
     messages.forEach(m => {
         const div = document.createElement('div');
         div.className = 'msg';
-        div.innerHTML = `<strong>${m.name || 'Anonim'}</strong><small>${m.time || ''}</small><div>${m.text || ''}</div>`;
+        let content = `<strong>${m.name || 'Anonim'}</strong><small>${m.time || ''}</small>`;
+        
+        if (m.text) {
+            content += `<div>${m.text}</div>`;
+        }
+        
+        if (m.files && m.files.length > 0) {
+            content += '<div class="mt-1">';
+            m.files.forEach(file => {
+                const icon = getFileIcon(file.name);
+                content += `<a href="${file.url}" target="_blank" class="badge bg-light text-dark text-decoration-none me-1">
+                    <i class="${icon}"></i> ${file.name}
+                </a>`;
+            });
+            content += '</div>';
+        }
+        
+        div.innerHTML = content;
         box.appendChild(div);
     });
     box.scrollTop = box.scrollHeight;
     document.getElementById('chatBadge').innerText = messages.length;
 }
 
+function getFileIcon(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    switch(ext) {
+        case 'pdf': return 'fa-solid fa-file-pdf';
+        case 'docx':
+        case 'doc': return 'fa-solid fa-file-word';
+        case 'xlsx':
+        case 'xls': return 'fa-solid fa-file-excel';
+        case 'jpg':
+        case 'jpeg':
+        case 'png': return 'fa-solid fa-file-image';
+        case 'ppt':
+        case 'pptx': return 'fa-solid fa-file-powerpoint';
+        default: return 'fa-solid fa-file';
+    }
+}
+
+async function uploadFileToGoogleScript(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const base64Data = e.target.result.split(',')[1];
+            
+            const formData = new FormData();
+            formData.append('action', 'upload');
+            formData.append('api_key', API_KEY);
+            formData.append('filename', file.name);
+            formData.append('file_data', base64Data);
+            formData.append('mime_type', file.type);
+            
+            try {
+                const response = await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                });
+                
+                const dummyUrl = URL.createObjectURL(file);
+                resolve({
+                    name: file.name,
+                    url: dummyUrl,
+                    type: file.type
+                });
+            } catch (error) {
+                console.error('Upload error:', error);
+                reject(error);
+            }
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 async function sendChat() {
     const name = document.getElementById('chatName').value.trim() || 'Anonim';
     const text = document.getElementById('chatInput').value.trim();
-    if (!text) return;
+    
+    if (!text && selectedFiles.length === 0) return;
+    
+    const uploadedFiles = [];
+    
+    if (selectedFiles.length > 0) {
+        showToast(`Mengupload ${selectedFiles.length} file...`);
+        
+        for (const file of selectedFiles) {
+            try {
+                const uploadedFile = await uploadFileToGoogleScript(file);
+                if (uploadedFile) {
+                    uploadedFiles.push(uploadedFile);
+                }
+            } catch (error) {
+                console.error(`Gagal upload ${file.name}:`, error);
+                showToast(`Gagal upload ${file.name}`);
+            }
+        }
+    }
+    
+    const chatData = {
+        name,
+        text: text || '',
+        time: new Date().toLocaleString('id-ID'),
+        files: uploadedFiles
+    };
+    
     const newRef = push(ref(database, 'chat'));
-    await set(newRef, { name, text, time: new Date().toLocaleString('id-ID') });
+    await set(newRef, chatData);
+    
     document.getElementById('chatInput').value = '';
+    selectedFiles = [];
+    updateFileList();
+    showToast('Pesan terkirim!');
+}
+
+function updateFileList() {
+    const fileList = document.getElementById('fileList');
+    fileList.innerHTML = '';
+    
+    selectedFiles.forEach((file, index) => {
+        const div = document.createElement('div');
+        div.className = 'file-item';
+        div.innerHTML = `
+            <span><i class="${getFileIcon(file.name)}"></i> ${file.name}</span>
+            <button class="btn btn-sm btn-danger" onclick="window.removeFile(${index})">×</button>
+        `;
+        fileList.appendChild(div);
+    });
+}
+
+window.removeFile = function(index) {
+    selectedFiles.splice(index, 1);
+    updateFileList();
 }
 
 function initFirebaseListeners() {
@@ -700,7 +1136,6 @@ function initFirebaseListeners() {
     
     onValue(ref(database, 'surat'), (snap) => {
         const data = snap.val();
-        console.log('Data surat dari Firebase:', data);
         dataSurat = data ? Object.values(data) : [];
         renderTabelSurat();
         updateStatSurat();
@@ -711,10 +1146,8 @@ function initFirebaseListeners() {
 
     onValue(ref(database, 'karyawan'), (snap) => {
         const data = snap.val();
-        console.log('Data karyawan dari Firebase:', data);
         
         if (!data || Object.keys(data).length === 0) {
-            console.log('Database kosong, menambahkan seed data...');
             const seedData = ["Budi Santoso", "Sinta Dewi", "Andi Wijaya", "Rina Marlina"];
             seedData.forEach(async (nama) => {
                 const newRef = push(ref(database, 'karyawan'));
@@ -739,7 +1172,6 @@ function initFirebaseListeners() {
 
     onValue(ref(database, 'absensi'), (snap) => {
         const data = snap.val();
-        console.log('Data absensi dari Firebase:', data);
         dataAbsensi = data || {};
         generateKalenderRitel();
     }, (error) => {
@@ -759,7 +1191,6 @@ function initFirebaseListeners() {
     showToast('Terhubung ke Firebase!');
 }
 
-// Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, setting up event listeners...');
     
@@ -774,6 +1205,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    document.getElementById('fileUploadArea').addEventListener('click', function() {
+        document.getElementById('fileInput').click();
+    });
+    
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+        const files = Array.from(e.target.files);
+        const maxSize = 5 * 1024 * 1024;
+        
+        files.forEach(file => {
+            if (file.size > maxSize) {
+                showToast(`File ${file.name} terlalu besar (max 5MB)`);
+                return;
+            }
+            
+            const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                'image/jpeg', 'image/png',
+                                'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+            
+            if (allowedTypes.includes(file.type) || 
+                file.name.match(/\.(pdf|docx?|xlsx?|jpe?g|png|ppt|pptx)$/i)) {
+                selectedFiles.push(file);
+            } else {
+                showToast(`Format file ${file.name} tidak didukung`);
+            }
+        });
+        
+        updateFileList();
+        document.getElementById('fileInput').value = '';
+    });
+    
+    document.getElementById('fileUploadArea').addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.style.borderColor = '#0dcaf0';
+        this.style.background = '#f0f9ff';
+    });
+    
+    document.getElementById('fileUploadArea').addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.style.borderColor = '#ddd';
+        this.style.background = 'transparent';
+    });
+    
+    document.getElementById('fileUploadArea').addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.style.borderColor = '#ddd';
+        this.style.background = 'transparent';
+        
+        const files = Array.from(e.dataTransfer.files);
+        files.forEach(file => {
+            if (file.size <= 5 * 1024 * 1024) {
+                selectedFiles.push(file);
+            } else {
+                showToast(`File ${file.name} terlalu besar`);
+            }
+        });
+        
+        updateFileList();
+    });
+
     document.getElementById('memoDari').addEventListener('input', renderMemoPreview);
     document.getElementById('memoKepada').addEventListener('input', renderMemoPreview);
     document.getElementById('memoTanggal').addEventListener('input', renderMemoPreview);
@@ -781,6 +1272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('memoIsi').addEventListener('input', renderMemoPreview);
     document.getElementById('setBulan').addEventListener('change', generateKalenderRitel);
     document.getElementById('setTahun').addEventListener('change', generateKalenderRitel);
+    document.getElementById('setPeriode').addEventListener('change', generateKalenderRitel);
 
     initAuthView();
     renderMemoPreview();
